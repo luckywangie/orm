@@ -133,7 +133,56 @@ def delete_category():
     else:
         print("category not found.")
 
+#Task
+def create_task():
+    title=input("Task title: ")
+    description=input("Task description: ")
+    user_id=input("User_ID: ")
+    category_id=input("Category ID: ")
+    task=Task(title=title,description=description,user_id=user_id,category_id=category_id)
+    session.add(task)
+    session.commit()
+    print("Task created.")
+    return task
 
+def list_tasks():
+    tasks=session.query(Task).all()
+    if not tasks:
+        print("No tasks found.")
+        return
+    for t in tasks:
+        print(f"ID: {t.id}, Title: {t.title}, Description: {t.description}")
+
+def fetch_task_by_id():
+    task_id=input("Enter task ID to fetch:")
+    task=session.query(Task).get(task_id)
+    if task:
+        print(f"ID: {task.id}, Title: {task.title}, Description: {task.description}")
+    else:
+        print("Task not found.")
+
+def update_task():
+    task_id=input("Enter task ID to update:")
+    task=session.query(Task).get(task_id)
+    if task:
+        title=input("Task title: ")
+        description=input("Task description: ")
+        task.title=title
+        task.description=description
+        session.commit()
+        print("Task updated.")
+    else:
+        print("Task not found.")
+
+def delete_task():
+    task_id=input("Enter task ID to delete:")
+    task=session.query(Task).get(task_id)
+    if task:
+        session.delete(task)
+        session.commit()
+        print("Task deleted.")
+    else:
+        print("Task not found.")
 
 
 
@@ -162,6 +211,11 @@ def main():
         print("8. Fetch single category by ID")
         print("9. update category")
         print("10. Delete category")
+        print("11. Create Task")
+        print("12. List All Tasks")
+        print("13. Fetch single task by ID")
+        print("14. Update Task")
+        print("15. Delete Task")
         print("0. Exit ")
         choice = input("Enter your choice : ")
 
@@ -185,9 +239,17 @@ def main():
         elif choice=="9":
             update_category()
         elif choice=="10":
-            delete_category()  
-
-
+            delete_category() 
+        elif choice=="11":
+            create_task()
+        elif choice=="12":
+            list_tasks()
+        elif choice=="13":
+            fetch_task_by_id()
+        elif choice=="14":
+            update_task()
+        elif choice=="15":
+            delete_task()
         elif choice=="0":
             print("Bye! Bye!")
             break
